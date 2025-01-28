@@ -1,39 +1,62 @@
 const express = require('express');
-const mysql  = require('mysql')
+const mysql = require('mysql');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 const cors = require('cors');
-app  = express(); 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: process.env.DB_PASSWORD,  
-    database: 'logintest'
-});
+
+const app = express();
 app.use(cors());
-db.connect((err)=>
-{
-    if(err){
-        console.log(err)
-    }
-    else{
-        console.log("my sql connect")
-    }
-}
-)
+app.use(express.json()); // För att hantera JSON-data från klienten.
 
-
-app.get("/", (req,res)=>{
-    res.send("<hi> home view </h1>")
-})
-
-app.get("/users", (req, res) => {
-    db.query('SELECT * FROM employee', (err, results) => {
-        if (err) {
-            return res.status(500).send(err);
-        }
-        res.json(results);
-    });
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: process.env.DB_PASSWORD,
+  database: 'logintest'
 });
 
+db.connect(err => {
+  if (err) {
+    console.error('Error connecting to MySQL:', err);
+    return;
+  }
+  console.log("MySQL connected");
+});
 
-app.listen(5001,()=> console.log("server started att 5000"))
+// Register User
+app.post('/register', async (req, res) => {
+  const { email, password } = req.body;
+  if (password && email) {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    db.query('INSERT INTO users (username, password) VALUES (?, ?)', [email, hashedPassword], (err, results) => {
+      if (err) {
+        console.error('Error inserting new user:', err);
+        res.status(500).send({ message: 'Error registering new user' });
+        return;
+      }
+      res.send({ message: 'User registered successfully' });
+    });
+  } else {
+    res.status(400).send({ message: 'Email and password are required' });
+  }
+});
+
+// Login User
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  db.query('SELECT password FROM users WHERE username = ?', [email], async (err, results) => {
+    if (err || results.length === 0) {
+      res.status(401).send({ message: 'User not found' });
+      return;
+    }
+    const match = await bcrypt.compare(password, results[0].password);
+    if (match) {
+      res.send({ message: 'Login successful' });
+    } else {
+      res.status(401).send({ message: 'Password is incorrect' });
+    }
+  });
+});
+
+app.listen(5001, () => console.log("Server started at port 5001"));
