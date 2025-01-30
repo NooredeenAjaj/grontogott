@@ -17,57 +17,27 @@ import LoginPage from "./LoginPage";
 //   extras: "http://localhost:8080/extras/",
 //   dressings: "http://localhost:8080/dressings/",
 // };
-const urls = [
-  "http://localhost:8080/foundations/",
-  "http://localhost:8080/proteins/",
-  "http://localhost:8080/extras/",
-  "http://localhost:8080/dressings/",
-];
 
 async function inventoryLoader() {
-  const inventoryPromises = [];
-
   try {
-    const categoryPromises = urls.map((url) => safeFetchJson(url));
-    const results = await Promise.all(categoryPromises);
-
-    results.forEach((categoryData, index) => {
-      const categoryUrl = urls[index];
-
-      categoryData.forEach((ingredient) => {
-        inventoryPromises.push(fetchIngredient(categoryUrl, ingredient));
-      });
-    });
-  } catch (error) {
-    console.error("Error loading inventory:", error);
-  }
-
-  const inventoryArray = await Promise.all(inventoryPromises);
-  const test = inventoryArray;
-  console.log(test);
-  //kopierar dem in i ett nytt tomt objekt {}, vilket i slutändan gör att alla objekt i inventoryArray kombineras till ett enda objekt där nycklarna är ingrediensnamnen, och värdena är deras respektive data.
-  const inventory = Object.assign({}, ...inventoryArray);
-  console.log(inventory);
-  await new Promise((resolve) => setTimeout(resolve, 100));
-  return inventory;
-}
-
-async function fetchIngredient(base, ing) {
-  const response = await fetch(base + ing);
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
-  return { [ing]: data };
-}
-
-function safeFetchJson(url) {
-  return fetch(url).then((response) => {
+    const response = await fetch("http://localhost:5001/inventory");
     if (!response.ok) {
-      throw new Error(`${url} returned status ${response.status}`);
+      throw new Error("Network response was not ok");
     }
-    return response.json();
-  });
+    const items = await response.json();
+    return items.map((item) => ({
+      ...item,
+      foundation: !!item.foundation,
+      protein: !!item.protein,
+      extra: !!item.extra, // Antar att extra finns i ditt objekt
+      vegan: !!item.vegan,
+      gluten: !!item.gluten,
+      lactose: !!item.lactose,
+    }));
+  } catch (error) {
+    console.error("Failed to fetch inventory:", error);
+    throw error;
+  }
 }
 
 const router = createBrowserRouter([
@@ -89,7 +59,7 @@ const router = createBrowserRouter([
 
       {
         path: "compose-salad",
-        //loader: inventoryLoader,
+        loader: inventoryLoader,
         Component: ComposeSalad,
       },
       {

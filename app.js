@@ -59,4 +59,25 @@ app.post('/login', (req, res) => {
   });
 });
 
+
+// Get all inventory items
+app.get('/inventory', (req, res) => {
+    db.query('SELECT * FROM inventory_items', (err, results) => {
+      if (err) {
+        console.error('Error fetching inventory items:', err);
+        res.status(500).send({ message: 'Error fetching inventory items' });
+        return;
+      }
+      res.json(results);
+    });
+  });
+  app.post('/orders', (req, res) => {
+    const { user_id, foundation, protein, dressing, extras, uuid } = req.body;
+    const sql = "INSERT INTO orders (user_id, foundation, protein, dressing, extras, uuid) VALUES (?, ?, ?, ?, ?, ?)";
+    db.query(sql, [user_id, foundation, protein, dressing, extras, uuid], (err, result) => {
+        if (err) throw err;
+        res.send({ status: 'Order received', order: uuid });
+    });
+});
+  
 app.listen(5001, () => console.log("Server started at port 5001"));

@@ -1,0 +1,51 @@
+/* LoginRegisterPage.module.css */
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+  }
+  /* I LoginRegisterPage.module.css */
+.message {
+  padding: 10px;
+  margin-top: 20px;
+  color: #fff;
+  background-color: #f44336; /* Röd bakgrund för felmeddelanden */
+  text-align: center;
+  border-radius: 4px;
+}
+
+  .formGroup {
+    margin-bottom: 15px;
+  }
+  
+  .label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .submitButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .toggleButton {
+    margin-top: 15px;
+    background-color: transparent;
+    color: #4CAF50;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  

@@ -1,29 +1,34 @@
 import { useState } from "react";
 import SelectInput from "../components/SelectInput";
 import Salad from "./Salad.mjs";
-//import inventory from "./inventory.mjs";
 import { useOutletContext, useNavigate, useLoaderData } from "react-router-dom";
 
 function ComposeSalad() {
   const { setShopCards } = useOutletContext();
   const navigate = useNavigate();
+
+  // Antag att `useLoaderData` returnerar en array av objekt
   const inventory = useLoaderData();
+  console.log(inventory);
   const [foundation, setFoundation] = useState("");
   const [protein, setProtein] = useState("");
   const [dressing, setDressing] = useState("");
   const [touched, setTouched] = useState(false);
-  const extrasList = Object.keys(inventory).filter(
-    (name) => inventory[name].extra
-  );
-  const foundationList = Object.keys(inventory).filter(
-    (name) => inventory[name].foundation
-  );
-  const proteinList = Object.keys(inventory).filter(
-    (name) => inventory[name].protein
-  );
-  const dressingList = Object.keys(inventory).filter(
-    (name) => inventory[name].dressing
-  );
+
+  // Skapa listor baserade på datan, inte på objektnycklar
+  const extrasList = inventory
+    .filter((item) => item.extra)
+    .map((item) => item.name);
+  const foundationList = inventory
+    .filter((item) => item.foundation)
+    .map((item) => item.name);
+  const proteinList = inventory
+    .filter((item) => item.protein)
+    .map((item) => item.name);
+  const dressingList = inventory
+    .filter((item) => item.dressing)
+    .map((item) => item.name);
+
   const [extras, setExtra] = useState(
     extrasList.reduce((acc, name) => {
       acc[name] = false;
@@ -39,11 +44,8 @@ function ComposeSalad() {
   }
 
   function handleSubmit(event) {
+    event.preventDefault(); // Always prevent form submission as default action
     setTouched(true); // Mark the form as touched to show feedback
-    if (!event.target.checkValidity()) {
-      event.preventDefault(); // Prevent form submission if validation fails
-      return; // Exit the function if validation fails
-    }
 
     const selectedExtras = Object.keys(extras).filter((extra) => extras[extra]);
 
@@ -58,14 +60,8 @@ function ComposeSalad() {
 
     setShopCards(saladObj);
 
-    //console.log(saladObj.uuid);
-
     setTouched(false);
-    //avigate("/view-order" ``);
-    //det var ``och inte ´´
     navigate(`/view-order/confirm/${saladObj.uuid}`);
-
-    event.preventDefault();
   }
 
   return (
