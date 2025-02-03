@@ -18,14 +18,6 @@ function App() {
     return storedCards ? Salad.parse(storedCards) : [];
   });
 
-  // const updateCards = (salad) => {
-  //   setShopCards((prevShopCards) => {
-  //     const updatedCart = [...prevShopCards, salad];
-  //     window.localStorage.setItem("shopCards", JSON.stringify(updatedCart));
-  //     return updatedCart;
-  //   });
-  // };
-
   const update = (salad) => {
     const updatedCart = [...shopCards, salad];
     setShopCards(updatedCart);

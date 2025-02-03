@@ -1,21 +1,24 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Se till att denna import är korrekt
-import styles from "./LoginRegisterPage.module.css"; // Importera din CSS-modul här
+import { useNavigate } from "react-router-dom";
+import styles from "./LoginRegisterPage.module.css";
 
 function LoginRegisterPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState(""); // För att spara meddelandet som ska visas
-  const [showMessage, setShowMessage] = useState(false); // För att visa eller dölja meddelandet
+  const [addressStreet, setAddressStreet] = useState("");
+  const [addressCity, setAddressCity] = useState("");
+  const [addressPostalCode, setAddressPostalCode] = useState("");
+  const [message, setMessage] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
 
-  const navigate = useNavigate(); // Initiera 'navigate' här med useNavigate-hook
+  const navigate = useNavigate();
 
   const displayMessage = (msg) => {
     setMessage(msg);
     setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 3000); // Meddelandet försvinner efter 3 sekunder
+    setTimeout(() => setShowMessage(false), 3000);
   };
 
   const handleSubmit = async (e) => {
@@ -28,7 +31,15 @@ function LoginRegisterPage() {
     const url = isLogin
       ? "http://localhost:5001/login"
       : "http://localhost:5001/register";
-    const payload = { email, password };
+    const payload = isLogin
+      ? { email, password }
+      : {
+          email,
+          password,
+          address_street: addressStreet,
+          address_city: addressCity,
+          address_postal_code: addressPostalCode,
+        };
 
     try {
       const response = await fetch(url, {
@@ -82,19 +93,60 @@ function LoginRegisterPage() {
           />
         </div>
         {!isLogin && (
-          <div className={styles.formGroup}>
-            <label htmlFor="confirmPassword" className={styles.label}>
-              Confirm Password:
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              className={styles.input}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
+          <>
+            <div className={styles.formGroup}>
+              <label htmlFor="confirmPassword" className={styles.label}>
+                Confirm Password:
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                className={styles.input}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="addressStreet" className={styles.label}>
+                Street Address:
+              </label>
+              <input
+                type="text"
+                id="addressStreet"
+                className={styles.input}
+                value={addressStreet}
+                onChange={(e) => setAddressStreet(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="addressCity" className={styles.label}>
+                City:
+              </label>
+              <input
+                type="text"
+                id="addressCity"
+                className={styles.input}
+                value={addressCity}
+                onChange={(e) => setAddressCity(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="addressPostalCode" className={styles.label}>
+                Postal Code:
+              </label>
+              <input
+                type="text"
+                id="addressPostalCode"
+                className={styles.input}
+                value={addressPostalCode}
+                onChange={(e) => setAddressPostalCode(e.target.value)}
+                required
+              />
+            </div>
+          </>
         )}
         <button type="submit" className={styles.submitButton}>
           {isLogin ? "Login" : "Register"}
