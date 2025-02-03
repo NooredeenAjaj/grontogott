@@ -8,6 +8,7 @@ import VideoBackground from "../components/VideoBackground";
 import BootstrapSpinner from "../components/BootstrapSpinner";
 import PromoSection from "../components/PromoSection";
 import PromoSec2 from "../components/PromoSec2";
+import CTASection from "../components/CTASection";
 import LoginPage from "./LoginPage";
 
 //import inventory from "./inventory.mjs";
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
             <VideoBackground />
 
             <PromoSection />
-            <PromoSec2 />
+            <CTASection />
           </>
         ),
       },

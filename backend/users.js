@@ -7,31 +7,43 @@ const { authenticateToken } = require('./auth');
 const router = express.Router();
 const SECRET_KEY = process.env.JWT_SECRET || "mysecretkey";
 
+
 router.post('/register', async (req, res) => {
-  const { email, password, address_street, address_city, address_postal_code } = req.body;
-  if (password && email && address_street && address_city && address_postal_code) {
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    
-    // Inkludera adressinformation i SQL-frågan
-    db.query('INSERT INTO users (username, password, address_street, address_city, address_postal_code) VALUES (?, ?, ?, ?, ?)', 
-    [email, hashedPassword, address_street, address_city, address_postal_code], (err, results) => {
-      if (err) {
-        console.error('Error inserting new user:', err);
-        res.status(500).send({ message: 'Error registering new user' });
-        return;
-      }
-      res.send({ message: 'User registered successfully' });
-    });
+  const { name, email, password, address_street, address_city, address_postal_code } = req.body;
+
+  if (name && email && password && address_street && address_city && address_postal_code) {
+    try {
+      const saltRounds = 10;
+      const salt = await bcrypt.genSalt(saltRounds);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      
+      db.query(
+        'INSERT INTO users (name, email, password, address_street, address_city, address_postal_code) VALUES (?, ?, ?, ?, ?, ?)',
+        [name, email, hashedPassword, address_street, address_city, address_postal_code],
+        (err, results) => {
+          if (err) {
+            console.error('Error inserting new user:', err);
+            res.status(500).send({ message: 'Error registering new user' });
+            return;
+          }
+          res.send({ message: 'User registered successfully' });
+        }
+      );
+    } catch (error) {
+      console.error('Error hashing password:', error);
+      res.status(500).send({ message: 'Internal server error' });
+    }
   } else {
-    res.status(400).send({ message: 'Email, password, and address information are required' });
+    res.status(400).send({ message: 'Name, email, password, and address information are required' });
   }
 });
+
 
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
   
-  db.query('SELECT id, password FROM users WHERE username = ?', [email], async (err, results) => {
+  db.query('SELECT id, password FROM users WHERE email = ?', [email], async (err, results) => {
     if (err || results.length === 0) {
       return res.status(401).send({ message: 'User not found' });
     }

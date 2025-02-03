@@ -4,6 +4,7 @@ import styles from "./LoginRegisterPage.module.css";
 
 function LoginRegisterPage() {
   const [isLogin, setIsLogin] = useState(true);
+  const [name, setName] = useState(""); // Nytt fält för namn
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,12 +29,18 @@ function LoginRegisterPage() {
       return;
     }
 
+    if (!isLogin && name.trim() === "") {
+      displayMessage("Name is required!");
+      return;
+    }
+
     const url = isLogin
       ? "http://localhost:5001/login"
       : "http://localhost:5001/register";
     const payload = isLogin
       ? { email, password }
       : {
+          name, // Skickar namnet vid registrering
           email,
           password,
           address_street: addressStreet,
@@ -66,6 +73,21 @@ function LoginRegisterPage() {
       <h2>{isLogin ? "Login" : "Register"}</h2>
       {showMessage && <div className={styles.message}>{message}</div>}
       <form onSubmit={handleSubmit}>
+        {!isLogin && (
+          <div className={styles.formGroup}>
+            <label htmlFor="name" className={styles.label}>
+              Name:
+            </label>
+            <input
+              type="text"
+              id="name"
+              className={styles.input}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+        )}
         <div className={styles.formGroup}>
           <label htmlFor="email" className={styles.label}>
             Email:

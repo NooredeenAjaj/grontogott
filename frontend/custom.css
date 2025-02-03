@@ -49,4 +49,15 @@ color:#dc2579 ;
     width: 250px; /* Justera storleken på logotypen efter behov */
     margin-bottom: 20px;
   }
+  .bg-success {
+    background-color: #d4edda !important; /* Ljusgrön bakgrund */
+  }
+  
+  .border-danger {
+    border-color: #dc3545 !important; /* Rosa linje */
+  }
+  
+  .text-danger {
+    color: #dc3545 !important; /* Rosa text */
+  }
   
