@@ -23,7 +23,6 @@ router.post('/register', async (req, res) => {
         [name, email, hashedPassword, address_street, address_city, address_postal_code],
         (err, results) => {
           if (err) {
-            console.error('Error inserting new user:', err);
             res.status(500).send({ message: 'Error registering new user' });
             return;
           }
@@ -31,7 +30,6 @@ router.post('/register', async (req, res) => {
         }
       );
     } catch (error) {
-      console.error('Error hashing password:', error);
       res.status(500).send({ message: 'Internal server error' });
     }
   } else {
