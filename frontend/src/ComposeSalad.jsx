@@ -9,7 +9,7 @@ function ComposeSalad() {
 
   // Antag att `useLoaderData` returnerar en array av objekt
   const inventory = useLoaderData();
-  console.log(inventory);
+
   const [foundation, setFoundation] = useState("");
   const [protein, setProtein] = useState("");
   const [dressing, setDressing] = useState("");

@@ -1,22 +1,24 @@
 import React from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import "../custom.css";
 
-function PromoSection() {
+function PromoSection({ title, subtitle, buttonText, buttonLink }) {
   return (
-    <div className="promo-section py-5">
+    <div className="white-section py-5">
       <Container className="text-center py-5">
-        <h2 className="promo-title prim-text-color">
-          Samla stämplar med vårt digitala stämpelkort
+        <h2
+          className="promo-title"
+          style={{ fontSize: "2.5rem", color: "#dc2579" }}
+        >
+          {title}
         </h2>
-        <p className="promo-subtitle prim-text-color">
-          Vill du att ditt företag ska synas i vår app?
-        </p>
-        <button type="button" className="btn pink-navbar text-white">
-          Läs mer
-        </button>
+        <p className="promo-subtitle prim-text-color">{subtitle}</p>
+        <a href={buttonLink} className="btn pink-navbar text-white">
+          {buttonText}
+        </a>
       </Container>
     </div>
   );
 }
+
 export default PromoSection;

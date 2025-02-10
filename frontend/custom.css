@@ -6,14 +6,17 @@
     background-color: #f6a4ca4a ;
    
 }
+.nav-link {
+  margin-right: 30px; 
+}
 .prim-text-color{
 color:#dc2579 ;
 }
   .pink-navbar .navbar-brand,
   .pink-navbar .nav-link {
-    color: #ffffff !important; /* Sätter textfärgen till vit */
+    color: #ffffff !important; 
   }
-  /* VideoBackground.css */
+
 
 .video-bg-container {
     height: 100vh;
@@ -43,6 +46,8 @@ color:#dc2579 ;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    
+
   }
   
   .logo {
@@ -59,5 +64,29 @@ color:#dc2579 ;
   
   .text-danger {
     color: #dc3545 !important; /* Rosa text */
+  }
+  
+  .promo-section-bg {
+    position: relative;
+    background-image: url("../src/assets/images/IMG_7628-scaled-1-2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 100px 0;
+  }
+  
+  .black-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); 
+    z-index: 0;
+  }
+  
+  .promo-section-bg > .container {
+    position: relative;
+    z-index: 1;
   }
   

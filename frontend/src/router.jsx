@@ -10,6 +10,7 @@ import PromoSection from "../components/PromoSection";
 import PromoSec2 from "../components/PromoSec2";
 import CTASection from "../components/CTASection";
 import LoginPage from "./LoginPage";
+import PromoSectionWithBg from "../components/PromoSectionBg";
 
 //import inventory from "./inventory.mjs";
 // const urls = {
@@ -30,7 +31,7 @@ async function inventoryLoader() {
       ...item,
       foundation: !!item.foundation,
       protein: !!item.protein,
-      extra: !!item.extra, // Antar att extra finns i ditt objekt
+      extra: !!item.extra,
       vegan: !!item.vegan,
       gluten: !!item.gluten,
       lactose: !!item.lactose,
@@ -52,8 +53,21 @@ const router = createBrowserRouter([
           <>
             <VideoBackground />
 
-            <PromoSection />
+            <PromoSection
+              title="Samla stämplar med vårt digitala stämpelkort"
+              subtitle={"Vill du att ditt företag ska synas i vår app?"}
+              buttonText="Om Oss"
+              buttonLink="/om-oss"
+            />
+
+            <PromoSectionWithBg />
             <CTASection />
+            <PromoSection
+              title="Vill du veta mer om oss?"
+              subtitle=""
+              buttonText="Om Oss"
+              buttonLink="/om-oss"
+            />
           </>
         ),
       },
