@@ -1,0 +1,36 @@
+# Operativsystem filer
+.DS_Store
+
+# IDE-specifika inställningsmappar
+.idea/
+.vscode/
+*.sublime-workspace
+
+# Node.js-relaterade
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Miljövariabelfiler
+.env
+
+# Python-relaterade
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Distributions-/byggkataloger
+dist/
+build/
+*.egg-info/
+*.tar.gz
+*.whl
+
+# Paketlås filer
+# package-lock.json och yarn.lock kan inkluderas i versionkontroll om du vill låsa beroendena.
+# Om du väljer att inte versionera dem, inkludera dessa rader:
+# package-lock.json
+# yarn.lock
